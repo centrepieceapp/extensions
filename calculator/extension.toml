@@ -1,0 +1,9 @@
+id = "calculator"
+name = "Calculator"
+description = "Evaluate arithmetic and copy the answer"
+prefix = "calc"
+icon = "asset:calculator.svg"
+api = "0.6"
+
+[permissions]
+clipboard = true

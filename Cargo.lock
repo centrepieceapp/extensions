@@ -40,6 +40,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "centrepiece-calculator"
+version = "0.1.0"
+dependencies = [
+ "centrepiece-extension",
+]
+
+[[package]]
 name = "centrepiece-extension"
 version = "0.6.0"
 source = "git+https://github.com/centrepieceapp/sdk?tag=v0.6.0#5abf4cc4c96836cb3033f330ca81f052ccde02b1"

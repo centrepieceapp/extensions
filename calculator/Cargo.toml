@@ -1,0 +1,13 @@
+[package]
+name = "centrepiece-calculator"
+version = "0.1.0"
+edition = "2024"
+description = "A Centrepiece extension: evaluate arithmetic and copy the answer"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+centrepiece-extension.workspace = true
