@@ -1,0 +1,25 @@
+# Chrome, as an extension: it reads Chrome's own files and starts Chrome's own
+# binary, and the manifest names exactly which.
+id = "chrome"
+name = "Chrome"
+description = "Search Chrome bookmarks, or open the copied URL in a profile"
+prefix = "bm"
+icon = "builtin:bookmark"
+api = "0.6"
+
+[permissions]
+# Bookmarks and profiles: Chrome, Chrome Beta and Chrome Canary live under
+# Google/, and Chromium beside it.
+read = [
+    "~/Library/Application Support/Google",
+    "~/Library/Application Support/Chromium",
+]
+# The copied URL, offered on the summon that follows the copy.
+read-clipboard = true
+# Chrome itself, which is the one way to open a page in a given profile.
+run = [
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "~/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+]
+# The default browser, for a bookmark when Chrome will not start.
+open = true
