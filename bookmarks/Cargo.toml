@@ -1,0 +1,17 @@
+[package]
+name = "centrepiece-bookmarks"
+version = "0.1.0"
+edition = "2024"
+description = "A Centrepiece extension: browse bookmarks by browser and profile"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+centrepiece-extension.workspace = true
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Safari keeps its bookmarks in a binary property list.
+plist = { version = "1", default-features = false }
