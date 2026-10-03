@@ -1,0 +1,15 @@
+[package]
+name = "centrepiece-aerospace"
+version = "0.1.0"
+edition = "2024"
+description = "A Centrepiece extension: move windows between AeroSpace workspaces and switch their layout"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+centrepiece-extension.workspace = true
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

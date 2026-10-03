@@ -1,0 +1,14 @@
+# AeroSpace, as an extension: everything goes through the `aerospace` command
+# line client, and the manifest names where it may be found.
+id = "aerospace"
+name = "AeroSpace"
+description = "Move windows between AeroSpace workspaces"
+prefix = "wm"
+icon = "builtin:layout-grid"
+api = "0.6"
+
+[permissions]
+# The client, where Homebrew puts it on Apple silicon and on Intel.
+run = ["/opt/homebrew/bin/aerospace", "/usr/local/bin/aerospace"]
+# The window the user was in, which is the one the actions act on.
+front-app = true
