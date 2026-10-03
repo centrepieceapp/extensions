@@ -1,0 +1,13 @@
+[package]
+name = "centrepiece-system"
+version = "0.1.0"
+edition = "2024"
+description = "A Centrepiece extension: system actions and Settings shortcuts"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+centrepiece-extension.workspace = true

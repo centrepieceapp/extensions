@@ -1,0 +1,10 @@
+id = "system"
+name = "System"
+description = "Lock, sleep, start the screen saver or open System Settings"
+prefix = "sys"
+icon = "builtin:computer"
+api = "0.6"
+
+[permissions]
+system-actions = true
+open = true
