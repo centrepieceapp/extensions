@@ -1,0 +1,15 @@
+[package]
+name = "centrepiece-github"
+version = "0.1.0"
+edition = "2024"
+description = "A Centrepiece extension: search your GitHub repositories and pull requests"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+centrepiece-extension.workspace = true
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

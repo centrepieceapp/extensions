@@ -1,0 +1,16 @@
+# GitHub, as an extension: everything it can reach is listed here, and nothing
+# else is reachable from inside its sandbox.
+id = "github"
+name = "GitHub"
+description = "Search your GitHub repositories"
+prefix = "gh"
+icon = "asset:mark-github.svg"
+api = "0.6"
+
+[permissions]
+# Every request goes to the REST API; opening a page is `open`, not network.
+network = ["api.github.com"]
+# The personal access token lives in the keychain.
+secrets = true
+# "View on GitHub", and opening pull requests and issues.
+open = true
