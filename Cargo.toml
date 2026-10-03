@@ -1,0 +1,14 @@
+[workspace]
+resolver = "3"
+members = []
+
+[workspace.dependencies]
+# The SDK, built like any extension outside this repository builds it. To try
+# a local checkout of it instead, set CENTREPIECE_SDK for scripts/extension.sh;
+# see the README.
+centrepiece-extension = { git = "https://github.com/centrepieceapp/sdk", tag = "v0.6.0" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true

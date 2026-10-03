@@ -1,0 +1,120 @@
+# Builds every extension a change touches into an archive of its own,
+# dist/<id>.tar.gz, and on main publishes it as the asset of the release
+# tagged <id>-latest. Then rewrites index.json on the release tagged `index`:
+# the catalogue Centrepiece lists under "Install extension ▸ From official
+# repo".
+name: Build extensions
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      all:
+        description: Rebuild every extension
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Two publishes at once could leave the index naming an older archive.
+concurrency:
+  group: build-${{ github.ref }}
+
+jobs:
+  affected:
+    runs-on: ubuntu-latest
+    outputs:
+      extensions: ${{ steps.affected.outputs.extensions }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: affected
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          ALL: ${{ inputs.all }}
+        run: |
+          case "$EVENT" in
+            pull_request) names=$(scripts/affected.sh "$PR_BASE") ;;
+            workflow_dispatch) if [ "$ALL" = true ]; then names=$(scripts/affected.sh); else names=$(scripts/affected.sh "HEAD~1"); fi ;;
+            *) names=$(scripts/affected.sh "$BEFORE") ;;
+          esac
+          if [ "$EVENT" != pull_request ]; then
+            # One never published yet is built whatever changed, so a new
+            # extension, or a fresh repository, gets its first archive.
+            for name in $(scripts/extensions.sh); do
+              gh release view "$name-latest" > /dev/null 2>&1 || names="$names $name"
+            done
+          fi
+          json=$(printf '%s\n' $names | sort -u | jq -R 'select(length > 0)' | jq -sc .)
+          echo "building: $json"
+          echo "extensions=$json" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: affected
+    if: needs.affected.outputs.extensions != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        extension: ${{ fromJson(needs.affected.outputs.extensions) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the toolchain in rust-toolchain.toml
+        run: rustup toolchain install
+      - uses: Swatinem/rust-cache@v2
+      - name: Test
+        run: cargo test -p "$(sed -n 's/^name = "\(.*\)"/\1/p' ${{ matrix.extension }}/Cargo.toml | head -n 1)"
+      - name: Build
+        run: scripts/extension.sh package ${{ matrix.extension }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.extension }}
+          path: dist/${{ matrix.extension }}.tar.gz
+      - name: Publish
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NAME: ${{ matrix.extension }}
+        run: |
+          tag="$NAME-latest"
+          notes="Built from $GITHUB_SHA."
+          if gh release view "$tag" > /dev/null 2>&1; then
+            # Keep the tag on the commit the archive was built from.
+            git push --force origin "$GITHUB_SHA:refs/tags/$tag"
+            gh release upload "$tag" "dist/$NAME.tar.gz" --clobber
+            gh release edit "$tag" --notes "$notes"
+          else
+            gh release create "$tag" "dist/$NAME.tar.gz" --target "$GITHUB_SHA" --title "$NAME" --notes "$notes"
+          fi
+
+  index:
+    needs: build
+    # After the builds, or with none to do; never after a failed one.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && !cancelled() && !failure()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish index.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          published=
+          for name in $(scripts/extensions.sh); do
+            gh release view "$name-latest" > /dev/null 2>&1 && published="$published $name"
+          done
+          mkdir -p dist
+          scripts/index.sh "$GITHUB_REPOSITORY" $published > dist/index.json
+          cat dist/index.json
+          if gh release view index > /dev/null 2>&1; then
+            gh release upload index dist/index.json --clobber
+          else
+            gh release create index dist/index.json --target "$GITHUB_SHA" --title "Extension index" \
+              --notes "The catalogue Centrepiece installs from. Rewritten on every build."
+          fi
