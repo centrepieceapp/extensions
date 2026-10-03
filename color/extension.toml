@@ -1,0 +1,13 @@
+# Colors, as an extension: it only ever reads the clipboard and writes to it.
+id = "color"
+name = "Color"
+description = "Preview a color and copy it as hex, rgb or hsl"
+prefix = "col"
+icon = "asset:palette.svg"
+api = "0.6"
+
+[permissions]
+# A color on the clipboard, offered on the summon that follows the copy.
+read-clipboard = true
+# Copying the color in the form picked.
+clipboard = true

@@ -1,0 +1,13 @@
+[package]
+name = "centrepiece-color"
+version = "0.1.0"
+edition = "2024"
+description = "A Centrepiece extension: preview a color and copy it as hex, rgb or hsl"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+centrepiece-extension.workspace = true
