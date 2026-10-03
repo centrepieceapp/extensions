@@ -1,0 +1,13 @@
+[package]
+name = "centrepiece-emoji"
+version = "0.1.0"
+edition = "2024"
+description = "A Centrepiece extension: copy an emoji"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+centrepiece-extension.workspace = true

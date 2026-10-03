@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["aerospace", "bookmarks", "calculator", "chrome", "color"]
+members = ["aerospace", "bookmarks", "calculator", "chrome", "color", "emoji"]
 
 [workspace.dependencies]
 # The SDK, built like any extension outside this repository builds it. To try

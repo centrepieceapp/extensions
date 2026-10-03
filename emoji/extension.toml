@@ -1,0 +1,10 @@
+# The smallest useful extension: a fixed list Centrepiece filters for it.
+id = "emoji"
+name = "Emoji"
+description = "Copy an emoji"
+prefix = "em"
+icon = "builtin:clipboard"
+api = "0.6"
+
+[permissions]
+clipboard = true
