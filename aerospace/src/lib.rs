@@ -566,7 +566,7 @@ fn workspace_items(overview: &Overview) -> Vec<Item> {
             }
 
             // A one-character name is its own key, which for the usual 1–9
-            // makes this the same gesture as AeroSpace's own bindings.
+            // makes `cmd-3` go to workspace 3.
             let mut characters = workspace.name.chars();
             if let (Some(first), None) = (characters.next(), characters.next()) {
                 item = item.glyph(first);

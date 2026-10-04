@@ -141,13 +141,13 @@ says so rather than listing anything.
 summoned Centrepiece, and opens a list of every workspace: its name, how many
 windows it holds and which applications they belong to, with `current` beside
 the one the window is on now. `↩` moves the window there and follows it; a
-workspace with a one-character name is also picked by that character, so `wm`,
-`↩`, `3` sends the window to workspace 3.
+workspace with a one-character name is also picked by `cmd` and that
+character, so `wm`, `↩`, `cmd-3` sends the window to workspace 3.
 
 **Switch layout** shows the layout in use as its subtitle — `Workspace 1 ·
 Horizontal tiles` — and offers the other three of AeroSpace's four: horizontal
-tiles (`h`), vertical tiles (`v`), horizontal accordion (`a`) and vertical
-accordion (`s`). The layout belongs to the container the window sits in, which
+tiles (`cmd-h`), vertical tiles (`cmd-v`), horizontal accordion (`cmd-a`) and
+vertical accordion (`cmd-s`). The layout belongs to the container the window sits in, which
 on a workspace without nested containers is the workspace itself. A floating
 window is in none of the four, so it is offered them all.
 
@@ -165,7 +165,7 @@ Chrome specifically, or in the default browser when Chrome will not start.
 **The copied URL.** Copy a link, press the hotkey, and the first row is **Open
 clipboard URL in Chrome profile**, with the link under it. `↩` lists every
 profile Chrome knows about — its name and the account it is signed in to — and
-each has a digit, so the whole trip is the hotkey, `↩`, `2`. The row is only
+each has a digit, so the whole trip is the hotkey, `↩`, `cmd-2`. The row is only
 there when the clipboard holds exactly one `http` or `https` URL and nothing
 else, and Chrome has profiles to open it in; it also leads the bookmark list
 under `bm` while it is.
@@ -228,15 +228,15 @@ manifest lets it reach. Later uses read it straight back out. A token stored
 by the built-in extension that came before (`centrepiece.local/github`) is not picked
 up; paste it again once.
 
-Type to filter your repositories. `↩` on one opens a submenu — no longer a
-search, so single keys act directly:
+Type to filter your repositories. `↩` on one opens a submenu, where typing
+still filters and `cmd` with a key acts directly:
 
-* `w` — View on GitHub (opens the repository in your default browser)
-* `p` — List pull requests
-* `i` — List issues
+* `cmd-w` — View on GitHub (opens the repository in your default browser)
+* `cmd-p` — List pull requests
+* `cmd-i` — List issues
 
-Both lists give every entry its own letter; pressing it opens that pull request
-or issue on GitHub. The pull request list leads with **View owner/name pull
+Both lists give every entry its own letter; `cmd` and it opens that pull request
+or issue on GitHub, and typing narrows the list by title. The pull request list leads with **View owner/name pull
 requests on GitHub**, so `↩` straight away opens the repository's whole list
 in the browser. `backspace` steps back one screen at a time.
 
@@ -262,8 +262,8 @@ token](https://github.com/settings/personal-access-tokens) with three
 | Permission | Needed for |
 | --- | --- |
 | Metadata | `GET /user/repos` — the repository list |
-| Pull requests | `GET /repos/{owner}/{repo}/pulls` — `p`; `GET /search/issues` — the **Pull requests** list |
-| Issues | `GET /repos/{owner}/{repo}/issues` — `i` |
+| Pull requests | `GET /repos/{owner}/{repo}/pulls` — `cmd-p`; `GET /search/issues` — the **Pull requests** list |
+| Issues | `GET /repos/{owner}/{repo}/issues` — `cmd-i` |
 
 A binary reads back the token it stored without being asked. Any other binary
 raises macOS's keychain consent dialog — twice in a row, because the keychain
@@ -276,7 +276,7 @@ itself behind the dialogs, and takes the keyboard back when they are gone.
 
 Nothing else. **Contents is not required** — Centrepiece never reads file
 content. `GET /user`, which it calls once to check the token and find the login
-to file it under, needs no permission at all. `w` makes no request; it opens the
+to file it under, needs no permission at all. `cmd-w` makes no request; it opens the
 URL already in the repository payload.
 
 A **classic token** works too, but it cannot express least privilege: `repo` is
